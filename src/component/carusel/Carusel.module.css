@@ -1,0 +1,23 @@
+.prev, .next{
+ /* background: url('arrowl.png') no-repeat;
+ background-size: cover; */
+ width: 32px;
+ height: 32px;
+}
+/* .next{
+ background: url('arrowr.png') no-repeat;
+ background-size: cover;
+ width: 32px;
+ height: 32px;
+} */
+.caruselbtn {
+	border-radius: 0;
+	border: 0;
+	padding: 0;
+	font-size: 0;
+	font-weight: 0;
+	font-family: 0;
+	background-color: transparent !important;
+	cursor: pointer;
+	transition: 0;
+}
