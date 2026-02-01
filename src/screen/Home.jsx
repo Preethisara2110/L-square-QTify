@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../component/Navbar'
-// import Search from '../component/Search'
-import Card from '../component/Card'
+// import Header from '../component/Navbar'
+// // import Search from '../component/Search'
+// import Card from '../component/Card'
 import Faq from '../component/Faq'
 import Section from '../component/Section'
 import { fetchdata } from '../api/allapiservice'
@@ -60,7 +60,7 @@ const Home = () => {
 
 const songhandler=(cat)=>{
  // console.log(cat, songdata);
-  const newdata = songdata.filter((item)=> item.genre.key == cat )
+  const newdata = songdata.filter((item)=> item.genre.key === cat )
  // console.log("newdata", newdata);
   setSongfilter(newdata)
   
