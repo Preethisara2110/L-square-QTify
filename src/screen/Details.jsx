@@ -58,7 +58,11 @@ useEffect(() => {
         
       <div className='flex gap-3 '>
         <div className=''>
-          <img src={image} className=' h-[300px]' /> 
+     <img
+            src={image}
+            alt={`${title} cover`}
+            className="h-[300px]"
+          />
         </div>
         <div className=' text-amber-50 text-left'>
           <h1>{title}</h1>
@@ -84,7 +88,11 @@ useEffect(() => {
   songlist?.map(item=>{
     return(
     <div key={item.id} className=' flex justify-between text-white items-center h-[60px] border-b border-cyan-50 '>
-    <span className='flex w-[40%] items-center gap-2'><img src={item.image} className=' w-7'/> {item.title}</span>
+    <span className='flex w-[40%] items-center gap-2'> <img
+                src={item.image}
+                alt={`${item.title} thumbnail`}
+                className="w-7"
+              /> {item.title}</span>
     <span>{item.artists[0]}</span>
     <span>{item.durationInMs}</span>
   </div>  
