@@ -22,7 +22,7 @@ export default function Section({ title, data, filterSource, type }) {
         setFilters([...filters, ...data]);
       });
     }
-  }, []);
+  }, [filterSource, filters]);
 
   const showFilters = filters.length > 1; //true
   const cardsToRender = data.filter((card) =>
