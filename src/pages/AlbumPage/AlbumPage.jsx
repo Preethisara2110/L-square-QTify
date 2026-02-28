@@ -4,23 +4,18 @@ import { useParams, useOutletContext } from "react-router-dom";
 
 export default function AlbumPage() {
   const { albumId } = useParams();
-  const { data } = useOutletContext(); // getting data from App.js
+  const { data } = useOutletContext(); 
   const nxtRef = useRef(null);
 
   const allAlbums = [...data.topAlbums, ...data.newAlbums];
-
-  const albumData = allAlbums.find(
-    (album) => album.slug === albumId
-  );
+  const albumData = allAlbums.find((album) => album.slug === albumId);
 
   const [songlist, setSonglist] = useState([]);
   const [count, setCount] = useState({ start: 0, end: 5 });
 
   const pagination = (direction) => {
     setCount((prev) => {
-      if (direction === "nxt") {
-        return { start: prev.end, end: prev.end + 5 };
-      }
+      if (direction === "nxt") return { start: prev.end, end: prev.end + 5 };
       if (direction === "prev") {
         return {
           start: Math.max(prev.start - 5, 0),
@@ -33,13 +28,10 @@ export default function AlbumPage() {
 
   useEffect(() => {
     if (!albumData) return;
-
     const list = albumData.songs.slice(count.start, count.end);
     setSonglist(list);
-
     if (nxtRef.current) {
-      nxtRef.current.disabled =
-        count.end >= albumData.songs.length;
+      nxtRef.current.disabled = count.end >= albumData.songs.length;
     }
   }, [count, albumData]);
 
@@ -50,52 +42,60 @@ export default function AlbumPage() {
   const { description, follows, image, title, songs } = albumData;
 
   return (
-    <div className="flex-1 px-10 pt-5">
-      <div className="flex gap-3">
-        <img src={image} alt={title} className="h-[300px]" />
-
-        <div className="text-amber-50 text-left">
-          <h1 className="text-3xl font-bold">{title}</h1>
-          <p>{description}</p>
-          <p>
-            {songs.length} songs · {follows} Follows
+    <div style={{ backgroundColor: '#121212', minHeight: '100vh', color: 'white', padding: '20px 40px' }}>
+      
+      {/* --- HERO SECTION (The Top Part) --- */}
+      <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-end', marginBottom: '40px' }}>
+        <img
+          src={image}
+          alt={title}
+          style={{ width: '280px', height: '280px', objectCover: 'cover', borderRadius: '8px', boxShadow: '0 4px 60px rgba(0,0,0,.5)' }}
+        />
+        <div style={{ textAlign: 'left' }}>
+          <h1 style={{ fontSize: '72px', fontWeight: '900', margin: '0 0 10px 0', letterSpacing: '-2px' }}>{title}</h1>
+          <p style={{ fontSize: '16px', opacity: '0.8', marginBottom: '8px' }}>{description}</p>
+          <p style={{ fontSize: '14px', fontWeight: '600' }}>
+            {songs.length} songs · 3 hr 45 min · {follows} Follows
           </p>
-
-          <div className="mt-3 flex gap-3">
-            <Button variant="contained">Shuffle</Button>
-            <Button variant="outlined">Add to library</Button>
+          <div style={{ marginTop: '25px', display: 'flex', gap: '15px' }}>
+            <button style={{ backgroundColor: '#1DB954', color: 'black', border: 'none', padding: '12px 32px', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer' }}>
+              SHUFFLE
+            </button>
+            <button style={{ backgroundColor: 'transparent', color: '#1DB954', border: '1px solid #1DB954', padding: '12px 32px', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer' }}>
+              ADD TO LIBRARY
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="mt-8">
-        <div className="flex gap-4 mb-4">
-          <Button onClick={() => pagination("prev")}>Prev</Button>
-          <Button onClick={() => pagination("nxt")} ref={nxtRef}>
-            Next
-          </Button>
-        </div>
-
-        <div className="flex justify-between text-white items-center h-[60px] border-b border-cyan-50">
-          <span className="flex w-[40%] items-center gap-2">Title</span>
-          <span>Artist</span>
-          <span>Duration</span>
-        </div>
-
-        {songlist.map((item) => (
-          <div
-            key={item.id}
-            className="flex justify-between text-white items-center h-[60px] border-b border-cyan-50"
-          >
-            <span className="flex w-[40%] items-center gap-2">
-              <img src={item.image} alt={item.title} className="w-7" />
-              {item.title}
-            </span>
-            <span>{item.artists[0]}</span>
-            <span>{(item.durationInMs / 60000).toFixed(2)} min</span>
-          </div>
-        ))}
+      {/* --- PAGINATION --- */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '20px', color: '#1DB954', fontWeight: 'bold', fontSize: '12px' }}>
+        <span onClick={() => pagination("prev")} style={{ cursor: 'pointer' }}>PREV</span>
+        <span onClick={() => pagination("nxt")} style={{ cursor: 'pointer' }}>NEXT</span>
       </div>
+
+      {/* --- SONG TABLE --- */}
+      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+        <thead>
+          <tr style={{ color: '#b3b3b3', borderBottom: '1px solid #282828', fontSize: '14px' }}>
+            <th style={{ padding: '10px', fontWeight: '400' }}>Title</th>
+            <th style={{ padding: '10px', fontWeight: '400' }}>Artist</th>
+            <th style={{ padding: '10px', fontWeight: '400', textAlign: 'right' }}>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {songlist.map((item) => (
+            <tr key={item.id} style={{ borderBottom: '1px solid transparent' }} className="song-row">
+              <td style={{ padding: '12px 10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <img src={item.image} alt="" style={{ width: '40px', height: '40px', borderRadius: '4px' }} />
+                <span style={{ fontWeight: '500' }}>{item.title}</span>
+              </td>
+              <td style={{ padding: '12px 10px', color: '#b3b3b3', fontSize: '14px' }}>{item.artists[0]}</td>
+              <td style={{ padding: '12px 10px', color: '#b3b3b3', fontSize: '14px', textAlign: 'right' }}>{item.durationInMs}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
